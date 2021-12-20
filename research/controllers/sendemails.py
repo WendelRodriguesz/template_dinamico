@@ -3,8 +3,8 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
-from research.config import EMAIL, EMAIL_PASSWORD
-from research.services.structured_data import Output
+from config import EMAIL, EMAIL_PASSWORD
+from services.structured_data import Output
 
 
 class Emails:

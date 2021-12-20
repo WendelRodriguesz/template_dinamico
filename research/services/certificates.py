@@ -7,7 +7,7 @@ from reportlab.lib import colors
 from reportlab.lib.enums import TA_LEFT, TA_CENTER
 from datetime import datetime
 import os
-from research.controllers.sendemails import Emails
+from controllers.sendemails import Emails
 
 
 class Organizador:

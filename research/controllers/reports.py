@@ -2,10 +2,10 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import landscape, A4
 from datetime import datetime
 import os
-from research.services.structured_data import Output
-from research.controllers.sendemails import Emails
-from research.templates.reports.capacitados.profissionais.profissionais_capacitados_2021 import Style_prof
-from research.templates.reports.capacitados.alunos.alunos_capacitados_2021 import Style_alun
+from services.structured_data import Output
+from controllers.sendemails import Emails
+from templates.reports.capacitados.profissionais.profissionais_capacitados_2021 import Style_prof
+from templates.reports.capacitados.alunos.alunos_capacitados_2021 import Style_alun
 
 
 class Organizador:
@@ -212,7 +212,7 @@ class Reports:
             time = str(time)
 
             # obtêm o relatório atual junto com a pasta de Profissionais capacitados.
-            diretorio = f'{os.getcwd()}/results/Profissionais Capacitados'
+            diretorio = f'{os.getcwd()}/research/results/Profissionais Capacitados'
 
             caminho = Organizador(nome).localize(diretorio)
             # Testa de a função teve sucesso, caso contrário a execução é parada com o erro.
@@ -292,7 +292,7 @@ class Reports:
             time = datetime.now()
             time = str(time)
 
-            diretorio = f'{os.getcwd()}/results/Alunos Capacitados'
+            diretorio = f'{os.getcwd()}/research/results/Alunos Capacitados'
 
             caminho = Organizador(nome).localize(diretorio)
             # Testa de a função teve sucesso, caso contrário a execução é parada com o erro.

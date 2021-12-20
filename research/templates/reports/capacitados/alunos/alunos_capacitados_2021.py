@@ -3,7 +3,7 @@ from reportlab.platypus import Paragraph, Frame
 from reportlab.lib import colors
 from reportlab.lib.enums import TA_LEFT, TA_CENTER
 import os
-from research.services.structured_data import Output
+from services.structured_data import Output
 
 
 class Style_alun:
@@ -41,7 +41,8 @@ class Style_alun:
 
     def _get_alunCapacit(self, period, program, iniciativa, entrega, execucao_perid, period_red):
         try:
-            diretorio = f'{os.getcwd()}/templates/reports/capacitados/'
+            diretorio = f'{os.getcwd()}/research/templates/reports/capacitados/'
+            print(os.getcwd())
             # Wallpaper
             wallpaper = f'{diretorio}images/pag1.jpg'
             self.pdf.drawImage(wallpaper, 0, 0, width=850, height=595)

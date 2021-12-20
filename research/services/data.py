@@ -4,6 +4,7 @@ class Information():
         pass
 
     def get_data_from_json(self, file):
+        file = 'research/'+file
         with open(file) as file_json:
             config = json.load(file_json)
         return config
