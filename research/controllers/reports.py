@@ -174,7 +174,7 @@ class Reports:
         """
         try:
             date_infull = {
-                '01': 'Jaaneiro',
+                '01': 'Janeiro',
                 '02': 'Fevereiro',
                 '03': 'Março',
                 '04': 'Abril',

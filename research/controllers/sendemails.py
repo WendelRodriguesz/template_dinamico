@@ -30,7 +30,7 @@ class Emails:
             msg['To'] = self.to_email
             password = self.password
 
-            msg.attach(MIMEText('self.text_body', 'plain'))
+            msg.attach(MIMEText(self.text_body, 'plain'))
 
             attachment = open(local+filename, 'rb')
 
