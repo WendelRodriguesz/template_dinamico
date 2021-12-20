@@ -1,7 +1,7 @@
 from controllers.reports import Reports
 
 
-# Name the parameters
+# Name the parametersj
 iniciativa = ["iniciativa 1", "iniciativa 2"]
 categoria = ["categoria 1", "categoria 2"]
 periodo_inicio = "01-01-2021"
