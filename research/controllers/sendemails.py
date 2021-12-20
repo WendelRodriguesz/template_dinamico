@@ -9,7 +9,7 @@ from services.structured_data import Output
 
 class Emails:
     """
-        Classe para enviar e-mail pela API do gmail.
+        Class for sending email via gmail API.
     """
     def __init__(self, subject, text_body, to_email):
         self.subject = subject
@@ -20,7 +20,7 @@ class Emails:
 
     def send_anex(self, local, filename):
         """
-            Função para enviar arquivos por e-mail.
+            Function to send files by email.
         """
         try:
             msg = MIMEMultipart()
@@ -50,9 +50,9 @@ class Emails:
             server.sendmail(self.email_origin, self.to_email, text)
             server.quit()
 
-            print('Email enviado com sucesso! para:', self.to_email)
+            print('Email sent successfully! to:', self.to_email)
             return Output().return_funtion(200, None)
 
         except Exception as error:
-            print('Error ao enviar e-mail!!', error)
+            print('Error sending email!!', error)
             return Output().return_funtion(400, error)

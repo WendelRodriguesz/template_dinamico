@@ -4,51 +4,50 @@ from reportlab.lib import colors
 from reportlab.lib.enums import TA_LEFT, TA_CENTER
 import os
 from services.structured_data import Output
-
-
-class Style_alun:
-    def __init__(self, pdf):
-        self.pdf = pdf
-
-    def _paragraphText(self, x, y, tamx, tamy, text, styles):
+ 
+ 
+class Style_prof:
+   def __init__(self, pdf):
+       self.pdf = pdf
+ 
+   def _paragraphText(self, x, y, tamx, tamy, text, styles):
+       try:
+           story = [Paragraph(text, styles)]
+           frame = Frame(x, y, tamx, tamy, showBoundary=0)
+           frame.addFromList(story, self.pdf)
+ 
+           return Output().return_funtion(200, None)
+ 
+       except Exception as error:
+           print('Error putting text into template.', error)
+           return Output().return_funtion(500, error)
+ 
+   def _get_informations(self, period, program, initiative, delivery, execution_perid, period_reduced):
+       try:
+           informations = [
+               period,
+               program,
+               initiative,
+               delivery,
+               execution_perid,
+               period_reduced
+           ]
+ 
+           return Output().return_funtion(200, informations)
+ 
+       except Exception as error:
+           print('Error putting text into template.', error)
+           return Output().return_funtion(500, error)
+ 
+   def _get_profCapacit(self, period, program, initiative, delivery, execution_perid, period_reduced):
         try:
-            story = [Paragraph(text, styles)]
-            frame = Frame(x, y, tamx, tamy, showBoundary=0)
-            frame.addFromList(story, self.pdf)
-
-            return Output().return_funtion(200, None)
-
-        except Exception as error:
-            print('Erro ao colocar texto no template.', error)
-            return Output().return_funtion(500, error)
-
-    def _get_informations(self, period, program, iniciativa, entrega, execucao_perid, period_red):
-        try:
-            informations = [
-                period,
-                program,
-                iniciativa,
-                entrega,
-                execucao_perid,
-                period_red
-            ]
-
-            return Output().return_funtion(200, informations)
-
-        except Exception as error:
-            print('Erro ao colocar texto no template.', error)
-            return Output().return_funtion(500, error)
-
-    def _get_alunCapacit(self, period, program, iniciativa, entrega, execucao_perid, period_red):
-        try:
-            diretorio = f'{os.getcwd()}/research/templates/reports/capacitados/'
-            print(os.getcwd())
+            directory = f'{os.getcwd()}/research/templates/reports/capables/'
             # Wallpaper
-            wallpaper = f'{diretorio}images/pag1.jpg'
+            wallpaper = f'{directory}images/pag1.jpg'
             self.pdf.drawImage(wallpaper, 0, 0, width=850, height=595)
 
             # Get basic information
-            information = self._get_informations(period, program, iniciativa, entrega, execucao_perid, period_red)
+            information = self._get_informations(period, program, initiative, delivery, execution_perid, period_reduced)
 
             # text
             styles = ParagraphStyle(alignment=TA_LEFT,
@@ -63,30 +62,30 @@ class Style_alun:
             program = information['results'][1]
             self._paragraphText(142, 295, 675, 30, program, styles)
 
-            iniciativa = information['results'][2]
-            self._paragraphText(142, 265, 674, 40, iniciativa, styles)
+            initiative = information['results'][2]
+            self._paragraphText(142, 265, 674, 40, initiative, styles)
 
-            entrega = information['results'][3]
-            self._paragraphText(142, 240, 675, 30, entrega, styles)
+            delivery = information['results'][3]
+            self._paragraphText(142, 240, 675, 30, delivery, styles)
 
-            execucao_perid = information['results'][4]
-            self._paragraphText(142, 125, 675, 100, execucao_perid, styles)
+            execution_perid = information['results'][4]
+            self._paragraphText(142, 125, 675, 100, execution_perid, styles)
 
             self.pdf.showPage()
 
-            # Página 2
-            wallpaper = f'{diretorio}images/pag2.jpg'
+            # Page 2
+            wallpaper = f'{directory}images/pag2.jpg'
             self.pdf.drawImage(wallpaper, 0, 0, width=850, height=595)
 
             self.pdf.showPage()
 
-            # Página 3
+            # Page 3
             # Wallpaper
-            wallpaper = f'{diretorio}images/pag3.jpg'
+            wallpaper = f'{directory}images/pag3.jpg'
             self.pdf.drawImage(wallpaper, 0, 0, width=850, height=595)
 
             # text
-            self._paragraphText(143, 387, 675, 30, entrega, styles)
+            self._paragraphText(143, 387, 675, 30, delivery, styles)
 
             styles = ParagraphStyle(alignment=TA_CENTER,
                                     name='LEFT',
@@ -94,11 +93,11 @@ class Style_alun:
                                     wordWrap=None,
                                     textColor=colors.white)
 
-            period_red = information['results'][5]
-            self._paragraphText(265, 320, 153, 30, period_red, styles)
-            self._paragraphText(665, 320, 153, 30, period_red, styles)
+            period_reduced = information['results'][5]
+            self._paragraphText(265, 320, 153, 30, period_reduced, styles)
+            self._paragraphText(665, 320, 153, 30, period_reduced, styles)
 
-            # região1
+            # region1
             subscribers_by_region = {
                 '01. CARIRI': 451,
                 '02. CENTRO SUL': 127,
@@ -144,16 +143,16 @@ class Style_alun:
                                         fontSize=12,
                                         wordWrap=None,
                                         textColor=colors.black)
-                self._paragraphText(row[i + 1], column, width[1], height, subscribers, styles)
+                self._paragraphText(row[i+1], column, width[1], height, subscribers, styles)
                 column -= 27
 
             # total Subscribers
             self._paragraphText(row[3], 105, width[1], height, str(total), styles)
 
             self.pdf.save()
-            print('Relatório gerado!')
+            print('Report generated!')
             return Output().return_funtion(200, None)
 
         except Exception as error:
-            print('Erro ao gerar o relatórios de alunos!!', error)
+            print('Error generating professional/report report!!', error)
             return Output().return_funtion(500, error)

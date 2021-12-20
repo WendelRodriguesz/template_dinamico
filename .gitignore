@@ -1,0 +1,12 @@
+# .idea/
+# __pycache__
+# venv
+
+# research/results
+# research/database
+research/test
+# research/files
+# research/credentials.json
+
+# .gitignore
+# app/main/.env
