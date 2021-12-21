@@ -4,11 +4,13 @@ from reportlab.lib import colors
 from reportlab.lib.enums import TA_LEFT, TA_CENTER
 import os
 from services.structured_data import Output
+from services.config_logging import log
  
  
 class Style_prof:
    def __init__(self, pdf):
        self.pdf = pdf
+       self.logger = log(__name__)
  
    def _paragraphText(self, x, y, tamx, tamy, text, styles):
        try:
@@ -19,7 +21,7 @@ class Style_prof:
            return Output().return_funtion(200, None)
  
        except Exception as error:
-           print('Error putting text into template.', error)
+           self.logger.error('Error putting text into template. ' + error)
            return Output().return_funtion(500, error)
  
    def _get_informations(self, period, program, initiative, delivery, execution_perid, period_reduced):
@@ -36,7 +38,7 @@ class Style_prof:
            return Output().return_funtion(200, informations)
  
        except Exception as error:
-           print('Error putting text into template.', error)
+           self.logger.info('Error putting text into template. ' + error)
            return Output().return_funtion(500, error)
  
    def _get_profCapacit(self, period, program, initiative, delivery, execution_perid, period_reduced):
@@ -150,9 +152,9 @@ class Style_prof:
             self._paragraphText(row[3], 105, width[1], height, str(total), styles)
 
             self.pdf.save()
-            print('Report generated!')
+            self.logger.info('Report generated!')
             return Output().return_funtion(200, None)
 
         except Exception as error:
-            print('Error generating professional/report report!!', error)
+            self.logger.error('Error generating professional/report report!! ' + error)
             return Output().return_funtion(500, error)

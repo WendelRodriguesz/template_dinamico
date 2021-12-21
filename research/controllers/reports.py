@@ -6,7 +6,7 @@ from services.structured_data import Output
 from controllers.sendemails import Emails
 from templates.reports.capables.professionals.profissionais_capacitados_2021 import Style_prof
 from templates.reports.capables.students.alunos_capacitados_2021 import Style_stud
- 
+from services.config_logging import log
  
 class Organizer:
    """
@@ -16,6 +16,7 @@ class Organizer:
        self.path = ''
        self.name_id = ''
        self.name = name
+       self.logger = log(__name__)
  
    def locate(self, name_rootdirectory):
        """
@@ -33,11 +34,11 @@ class Organizer:
                os.makedirs(self.path)
                # Create folder
  
-           print('Path verified successfully.')
+           self.logger.info('Path verified successfully.')
            return Output().return_funtion(200, self.path)
  
        except Exception as error:
-           print('Error organizing file.', error)
+           self.logger.error('Error organizing file. ' + error)
            return Output().return_funtion(500, error)
  
    def generate_name_id(self, time):
@@ -51,11 +52,11 @@ class Organizer:
            time = time.replace('.', '')
            self.name_id = time + "_" + self.name
  
-           print('name_id generated successfully')
+           self.logger.info('name_id generated successfully')
            return Output().return_funtion(200, self.name_id)
  
        except Exception as error:
-           print('Error generating name_id.', error)
+           self.logger.error('Error generating name_id. ' + error)
            return Output().return_funtion(500, error)
  
  
@@ -69,6 +70,7 @@ class Send_report:
        self.subject = title
        self.to_email = to_email
        self.text_body = f'Segue em anexo o {title}.'
+       self.logger = log(__name__)
  
    def del_arquive(self):
        """
@@ -77,11 +79,11 @@ class Send_report:
        try:
            # Delete thefile
            os.unlink(f'{self.local}/{self.filename}')
-           print('Deleted file.')
+           self.logger.info('Deleted file.')
            return Output().return_funtion(200, None)
  
        except Exception as error:
-           print('Error deleting file.', error)
+           self.logger.error('Error deleting file. ' + error)
            return Output().return_funtion(500, error)
  
    def sending(self):
@@ -89,7 +91,7 @@ class Send_report:
            Function to send the file by email from the user.
        """
        try:
-           print('Sending...')
+           self.logger.info('Sending...')
            shipping = Emails(self.subject, self.text_body, self.to_email).send_anex(self.local, self.filename)
  
            # To try 3 times if it fails.
@@ -101,18 +103,18 @@ class Send_report:
  
            # Tests whether the function was successful, otherwise the execution is stopped with the error.
            if shipping['status'] != 200:
-               print('Error sending email.')
+               self.logger.error('Error sending email.')
                return Output().return_funtion(400, shipping['results'])
            else:
                test = self.del_arquive()
                # Tests whether the function was successful, otherwise the execution is stopped with the error.
                if test['status'] != 200:
-                   print('Error deleting file')
+                   self.logger.error('Error deleting file')
                    return Output().return_funtion(test['status'], test['results'])
  
            return Output().return_funtion(200, None)
        except Exception as error:
-           print('Error trying to send the file.', error)
+           self.logger.error('Error trying to send the file. ' + error)
            return Output().return_funtion(500, error)
  
  
@@ -128,6 +130,7 @@ class Reports:
        self.workload = workload
        self.to_email = to_email
        self.type = type
+       self.logger = log(__name__)
  
    def manage_reports(self):
        """
@@ -135,22 +138,22 @@ class Reports:
        """
        try:
            if self.type == 'PROFISSIONAL-CAPACITADO':
-               print('File type completed successfully!')
+               self.logger.info('File type completed successfully!')
                self._get_professional_capable()
  
                return Output().return_funtion(200, None)
  
            elif self.type == 'ALUNO-CAPACITADO':
-               print('File type completed successfully!')
+               self.logger.info('File type completed successfully!')
                self._get_student_capable()
                return Output().return_funtion(200, None)
  
            else:
-               print('Error finding file type!!')
+               self.logger.error('Error finding file type!!')
                return Output().return_funtion(404, None)
  
        except Exception as error:
-           print('Error to file type!!', error)
+           self.logger.error('Error to file type!! ' + error)
            return Output().return_funtion(404, error)
  
    def transform_date(self):
@@ -165,7 +168,7 @@ class Reports:
            return Output().return_funtion(200, dates)
  
        except Exception as error:
-           print('Error converting dates', error)
+           self.logger.error('Error converting dates ' + error)
            return Output().return_funtion(500, error)
  
    def _get_date(self):
@@ -199,7 +202,7 @@ class Reports:
            return Output().return_funtion(200, results)
  
        except Exception as error:
-           print('Error finding period', error)
+           self.logger.error('Error finding period ' + error)
            return Output().return_funtion(404, error)
  
    def _get_professional_capable(self):
@@ -217,13 +220,13 @@ class Reports:
            path = Organizer(name).locate(directory)
            # Tests whether the function was successful, otherwise the execution is stopped with the error.
            if path['status'] != 200:
-               print('Error generating path and folder')
+               self.logger.error('Error generating path and folder')
                return Output().return_funtion(path['status'], path['results'])
  
            name_id = Organizer(name).generate_name_id(time)
            # Tests whether the function was successful, otherwise the execution is stopped with the error.
            if name_id['status'] != 200:
-               print('Error generating name_id name')
+               self.logger.error('Error generating name_id name')
                return Output().return_funtion(name_id['status'], name_id['results'])
  
            # Identify the creation, location and file type.
@@ -235,7 +238,7 @@ class Reports:
  
            # Tests whether the function was successful, otherwise the execution is stopped with the error.
            if periods['status'] != 200:
-               print('Error getting period', periods['status'], periods['results'])
+               self.logger.error('Error getting period ' + periods['status'] + ' ' + periods['results'])
                return Output().return_funtion(periods['status'], periods['results'])
  
            # Setting the parameters
@@ -263,9 +266,9 @@ class Reports:
  
            # Tests whether the function was successful, otherwise the execution is stopped with the error.
            if test['status'] != 200:
-               print('Error generating report')
+               self.logger.error('Error generating report')
                return Output().return_funtion(test['status'], test['results'])
-           print('Report generated')
+           self.logger.info('Report generated')
  
            # Calls uploading and deleting the file.
            title = f'Relatório de {delivery} - {period}'
@@ -274,13 +277,13 @@ class Reports:
  
            # Tests whether the function was successful, otherwise the execution is stopped with the error.
            if test['status'] != 200:
-               print('Error generating send and delete report')
+               self.logger.error('Error generating send and delete report')
                return Output().return_funtion(test['status'], test['results'])
  
            return Output().return_funtion(200, None)
  
        except Exception as error:
-           print('Error generating professional report!!', error)
+           self.logger.error('Error generating professional report!! ' + error)
            return Output().return_funtion(500, error)
  
    def _get_student_capable(self):
@@ -297,13 +300,13 @@ class Reports:
            path = Organizer(name).locate(directory)
            # Tests whether the function was successful, otherwise the execution is stopped with the error.
            if path['status'] != 200:
-               print('Error generating path and folder')
+               self.logger.error('Error generating path and folder')
                return Output().return_funtion(path['status'], path['results'])
  
            name_id = Organizer(name).generate_name_id(time)
            # Tests whether the function was successful, otherwise the execution is stopped with the error.
            if name_id['status'] != 200:
-               print('Error generating name_id name')
+               self.logger.error('Error generating name_id name')
                return Output().return_funtion(name_id['status'], name_id['results'])
  
            # Identify the creation, location and file type.
@@ -315,7 +318,7 @@ class Reports:
  
            # Tests whether the function was successful, otherwise the execution is stopped with the error.
            if periods['status'] != 200:
-               print('Error getting period', periods['status'], periods['results'])
+               self.logger.error('Error getting period ' + periods['status'] + ' ' + periods['results'])
                return Output().return_funtion(periods['status'], periods['results'])
  
            # Setting the parameters
@@ -343,9 +346,9 @@ class Reports:
  
            # Tests whether the function was successful, otherwise the execution is stopped with the error.
            if test['status'] != 200:
-               print('Error generating report')
+               self.logger.error('Error generating report')
                return Output().return_funtion(test['status'], test['results'])
-           print('Report generated')
+           self.logger.info('Report generated')
  
            # Calls uploading and deleting the file.
            title = f'Relatório de {delivery} - {period}'
@@ -354,12 +357,12 @@ class Reports:
  
            # Tests whether the function was successful, otherwise the execution is stopped with the error.
            if test['status'] != 200:
-               print('Error generating send and delete report')
+               self.logger.error('Error generating send and delete report')
                return Output().return_funtion(test['status'], test['results'])
  
            return Output().return_funtion(200, None)
  
        except Exception as error:
-           print('Error generating student report!!', error)
+           self.logger.error('Error generating student report!! ' + error)
            return Output().return_funtion(500, error)
 

@@ -5,6 +5,8 @@ from email.mime.base import MIMEBase
 from email import encoders
 from config import EMAIL, EMAIL_PASSWORD
 from services.structured_data import Output
+from services.config_logging import log
+
 
 
 class Emails:
@@ -17,6 +19,7 @@ class Emails:
         self.password = EMAIL_PASSWORD
         self.text_body = text_body
         self.to_email = to_email
+        self.logger = log(__name__)
 
     def send_anex(self, local, filename):
         """
@@ -50,9 +53,9 @@ class Emails:
             server.sendmail(self.email_origin, self.to_email, text)
             server.quit()
 
-            print('Email sent successfully! to:', self.to_email)
+            self.logger.info('Email sent successfully! to: ' + self.to_email)
             return Output().return_funtion(200, None)
 
         except Exception as error:
-            print('Error sending email!!', error)
+            self.logger.error('Error sending email!! ' + error)
             return Output().return_funtion(400, error)

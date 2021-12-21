@@ -7,6 +7,6 @@ research/database
 research/test
 research/files
 research/credentials.json
-
+*.log
 .gitignore
 app/main/.env
