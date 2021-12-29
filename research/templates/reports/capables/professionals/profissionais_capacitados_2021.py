@@ -4,13 +4,13 @@ from reportlab.lib import colors
 from reportlab.lib.enums import TA_LEFT, TA_CENTER
 import os
 from services.structured_data import Output
-from services.config_logging import log
+from services.config_logging import Log
  
  
 class Style_prof:
    def __init__(self, pdf):
        self.pdf = pdf
-       self.logger = log(__name__)
+       self.logger = Log().logger(__name__)
  
    def _paragraphText(self, x, y, tamx, tamy, text, styles):
        try:

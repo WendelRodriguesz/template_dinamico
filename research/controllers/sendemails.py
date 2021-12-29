@@ -5,7 +5,7 @@ from email.mime.base import MIMEBase
 from email import encoders
 from config import EMAIL, EMAIL_PASSWORD
 from services.structured_data import Output
-from services.config_logging import log
+from services.config_logging import Log
 
 
 
@@ -19,7 +19,7 @@ class Emails:
         self.password = EMAIL_PASSWORD
         self.text_body = text_body
         self.to_email = to_email
-        self.logger = log(__name__)
+        self.logger = Log().logger(__name__)
 
     def send_anex(self, local, filename):
         """

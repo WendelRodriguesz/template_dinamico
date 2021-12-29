@@ -6,7 +6,7 @@ from services.structured_data import Output
 from controllers.sendemails import Emails
 from templates.reports.capables.professionals.profissionais_capacitados_2021 import Style_prof
 from templates.reports.capables.students.alunos_capacitados_2021 import Style_stud
-from services.config_logging import log
+from services.config_logging import Log
  
 class Organizer:
    """
@@ -16,7 +16,7 @@ class Organizer:
        self.path = ''
        self.name_id = ''
        self.name = name
-       self.logger = log(__name__)
+       self.logger = Log().logger(__name__)
  
    def locate(self, name_rootdirectory):
        """
@@ -70,7 +70,7 @@ class Send_report:
        self.subject = title
        self.to_email = to_email
        self.text_body = f'Segue em anexo o {title}.'
-       self.logger = log(__name__)
+       self.logger = Log().logger(__name__)
  
    def del_arquive(self):
        """
@@ -130,7 +130,7 @@ class Reports:
        self.workload = workload
        self.to_email = to_email
        self.type = type
-       self.logger = log(__name__)
+       self.logger = Log().logger(__name__)
  
    def manage_reports(self):
        """
@@ -161,8 +161,8 @@ class Reports:
            Function to convert the dates provided from the API, into the report date.
        """
        try:
-           start_period = f'{self.start_period[6:10]}-{self.start_period[3:5]}-{self.start_period[:2]}'
-           end_period = f'{self.end_period[6:10]}-{self.end_period[3:5]}-{self.end_period[:2]}'
+           start_period = f'{self.start_period[6:10]}-{self.start_period[3:5]}-{self.start_period[:2]}T00:00:00-03:00'
+           end_period = f'{self.end_period[6:10]}-{self.end_period[3:5]}-{self.end_period[:2]}T23:59:59-03:00'
            dates = [start_period, end_period]
  
            return Output().return_funtion(200, dates)
