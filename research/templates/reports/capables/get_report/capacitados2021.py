@@ -7,7 +7,7 @@ from services.structured_data import Output
 from services.config_logging import Log
  
  
-class Style_prof:
+class Style_cap:
    def __init__(self, pdf):
        self.pdf = pdf
        self.logger = Log().logger(__name__)
@@ -41,9 +41,9 @@ class Style_prof:
            self.logger.info('Error putting text into template. ' + error)
            return Output().return_funtion(500, error)
  
-   def _get_profCapacit(self, period, program, initiative, delivery, execution_perid, period_reduced):
+   def _get_Capacit(self, period, program, initiative, delivery, execution_perid, period_reduced, subscribers_by_region):
         try:
-            directory = f'{os.getcwd()}/research/templates/reports/capables/'
+            directory = f'{os.getcwd()}/main/templates/reports/capables/'
             # Wallpaper
             wallpaper = f'{directory}images/pag1.jpg'
             self.pdf.drawImage(wallpaper, 0, 0, width=850, height=595)
@@ -100,25 +100,8 @@ class Style_prof:
             self._paragraphText(665, 320, 153, 30, period_reduced, styles)
 
             # region1
-            subscribers_by_region = {
-                '01. CARIRI': 451,
-                '02. CENTRO SUL': 127,
-                '03. GRANDE FORTALEZA': 662,
-                '04. LITORAL LESTE': 35,
-                '05. LITORAL NORTE': 161,
-                '06. LITORAL OESTE/VALE DO CURU': 156,
-                '07. MACIÇO DO BATURITÉ': 20,
-                '08. SERRA DA IBIAPABA': 35,
-                '09. SERTÃO CENTRAL': 107,
-                '10. SERTÃO DE CANINDÉ': 43,
-                '11. SERTÃO DE SOBRAL': 73,
-                '12. SERTÃO DOS CRATEÚS': 66,
-                '13. SERTÃO DOS INHAMUNS': 7,
-                '14. VALE DO JAGUARIBE': 30,
-                '15. ESTADO DO CEARÁ': 4
-            }
-            column = 293
-            row = [30, 265, 420, 665]
+            row = 293
+            column = [30, 265, 420, 665]
             width = [235, 153]
             height = 30
             i = 0
@@ -127,8 +110,8 @@ class Style_prof:
             for region in subscribers_by_region:
                 subscribers = str(subscribers_by_region[region])
                 total += subscribers_by_region[region]
-                if column == 77:
-                    column = 293
+                if row == 77:
+                    row = 293
                     i = 2
 
                 # Region
@@ -137,7 +120,7 @@ class Style_prof:
                                         fontSize=12,
                                         wordWrap=None,
                                         textColor=colors.white)
-                self._paragraphText(row[i], column, width[0], height, region, styles)
+                self._paragraphText(column[i], row, width[0], height, region, styles)
 
                 # Subscribers
                 styles = ParagraphStyle(alignment=TA_CENTER,
@@ -145,16 +128,16 @@ class Style_prof:
                                         fontSize=12,
                                         wordWrap=None,
                                         textColor=colors.black)
-                self._paragraphText(row[i+1], column, width[1], height, subscribers, styles)
-                column -= 27
+                self._paragraphText(column[i + 1], row, width[1], height, subscribers, styles)
+                row -= 27
 
             # total Subscribers
-            self._paragraphText(row[3], 105, width[1], height, str(total), styles)
+            self._paragraphText(column[3], 105, width[1], height, str(total), styles)
 
             self.pdf.save()
             self.logger.info('Report generated!')
             return Output().return_funtion(200, None)
 
         except Exception as error:
-            self.logger.error('Error generating professional/report report!! ' + error)
+            self.logger.error('Error generating capables report!! ' + error)
             return Output().return_funtion(500, error)

@@ -4,8 +4,7 @@ from datetime import datetime
 import os
 from services.structured_data import Output
 from controllers.sendemails import Emails
-from templates.reports.capables.professionals.profissionais_capacitados_2021 import Style_prof
-from templates.reports.capables.students.alunos_capacitados_2021 import Style_stud
+from templates.reports.capables.get_report.capacitados2021 import Style_cap
 from services.config_logging import Log
  
 class Organizer:
@@ -253,16 +252,37 @@ class Reports:
  
            delivery = self.type.replace('-', ' ')
  
-           execution_perid = """Essa iniciativa engloba profissionais da educação que recebem formação, na modalidade
-            presencial, semipresencial e educação a distância (EaD), com o objetivo qualificar seu desempenho,
-            bem como contribuir para a melhoria do ensino regular na Rede Pública Estadual, sendo eles:
-            professores, diretores, coordenadores pedagógicos e técnicos. Nos meses de janeiro a junho foram
-            qualificados 1.977 (mil, novecentos e setenta e sete) profissionais da educação. Dentre as principais
-            formações podemos citar: Compartilhando Saberes e Conhecimentos entre Pares, Jornadas Pedagógicas,
-            Oficinas de Gravação de Vídeo Aulas, Curso Diálogos Socioemocionais, Conexão SEDUC. """
+           total = 1  # Change heee-------------------------------------------------------------
+
+           execution_perid = f"""Essa iniciativa engloba profissionais da educação que recebem formação, na modalidade
+                        presencial, semipresencial e educação a distância (EaD), com o objetivo qualificar seu desempenho,
+                        bem como contribuir para a melhoria do ensino regular na Rede Pública Estadual, sendo eles:
+                        professores, diretores, coordenadores pedagógicos e técnicos. Nos meses de {period.lower()} foram
+                        qualificados {str(total)} alunos da rede estadual. Dentre as principais
+                        formações podemos citar: Compartilhando Saberes e Conhecimentos entre Pares, Jornadas Pedagógicas,
+                        Oficinas de Gravação de Vídeo Aulas, Curso Diálogos Socioemocionais, Conexão SEDUC. """
+
+           subscribers_by_region = {
+                '01. CARIRI': 451,
+                '02. CENTRO SUL': 127,
+                '03. GRANDE FORTALEZA': 662,
+                '04. LITORAL LESTE': 35,
+                '05. LITORAL NORTE': 161,
+                '06. LITORAL OESTE/VALE DO CURU': 156,
+                '07. MACIÇO DO BATURITÉ': 20,
+                '08. SERRA DA IBIAPABA': 35,
+                '09. SERTÃO CENTRAL': 107,
+                '10. SERTÃO DE CANINDÉ': 43,
+                '11. SERTÃO DE SOBRAL': 73,
+                '12. SERTÃO DOS CRATEÚS': 66,
+                '13. SERTÃO DOS INHAMUNS': 7,
+                '14. VALE DO JAGUARIBE': 30,
+                '15. ESTADO DO CEARÁ': 4
+            }
+
  
            # Takes file generation.
-           test = Style_prof(pdf)._get_profCapacit(period, program, initiative, delivery, execution_perid, period_reduced)
+           test = Style_cap(pdf)._get_Capacit(period, program, initiative, delivery, execution_perid, period_reduced, subscribers_by_region)
  
            # Tests whether the function was successful, otherwise the execution is stopped with the error.
            if test['status'] != 200:
@@ -333,16 +353,36 @@ class Reports:
  
            delivery = self.type.replace('-', ' ')
  
-           execution_perid = """Essa iniciativa engloba profissionais da educação que recebem formação, na modalidade
-            presencial, semipresencial e educação a distância (EaD), com o objetivo qualificar seu desempenho,
-            bem como contribuir para a melhoria do ensino regular na Rede Pública Estadual, sendo eles:
-            professores, diretores, coordenadores pedagógicos e técnicos. Nos meses de janeiro a junho foram
-            qualificados 1.977 (mil, novecentos e setenta e sete) profissionais da educação. Dentre as principais
-            formações podemos citar: Compartilhando Saberes e Conhecimentos entre Pares, Jornadas Pedagógicas,
-            Oficinas de Gravação de Vídeo Aulas, Curso Diálogos Socioemocionais, Conexão SEDUC. """
- 
+           total = 1  # Change heee-------------------------------------------------------------
+
+           execution_perid = f"""Essa iniciativa engloba profissionais da educação que recebem formação, na modalidade
+                        presencial, semipresencial e educação a distância (EaD), com o objetivo qualificar seu desempenho,
+                        bem como contribuir para a melhoria do ensino regular na Rede Pública Estadual, sendo eles:
+                        professores, diretores, coordenadores pedagógicos e técnicos. Nos meses de {period.lower()} foram
+                        qualificados {str(total)} alunos da rede estadual. Dentre as principais
+                        formações podemos citar: Compartilhando Saberes e Conhecimentos entre Pares, Jornadas Pedagógicas,
+                        Oficinas de Gravação de Vídeo Aulas, Curso Diálogos Socioemocionais, Conexão SEDUC. """
+
+           subscribers_by_region = {
+                '01. CARIRI': 451,
+                '02. CENTRO SUL': 127,
+                '03. GRANDE FORTALEZA': 662,
+                '04. LITORAL LESTE': 35,
+                '05. LITORAL NORTE': 161,
+                '06. LITORAL OESTE/VALE DO CURU': 156,
+                '07. MACIÇO DO BATURITÉ': 20,
+                '08. SERRA DA IBIAPABA': 35,
+                '09. SERTÃO CENTRAL': 107,
+                '10. SERTÃO DE CANINDÉ': 43,
+                '11. SERTÃO DE SOBRAL': 73,
+                '12. SERTÃO DOS CRATEÚS': 66,
+                '13. SERTÃO DOS INHAMUNS': 7,
+                '14. VALE DO JAGUARIBE': 30,
+                '15. ESTADO DO CEARÁ': 4
+            }
+
            # Takes file generation.
-           test = Style_stud(pdf)._get_studCapacit(period, program, initiative, delivery, execution_perid, period_reduced)
+           test = Style_cap(pdf)._get_Capacit(period, program, initiative, delivery, execution_perid, period_reduced, subscribers_by_region)
  
            # Tests whether the function was successful, otherwise the execution is stopped with the error.
            if test['status'] != 200:
