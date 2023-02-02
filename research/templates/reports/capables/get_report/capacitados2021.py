@@ -43,7 +43,8 @@ class Style_cap:
  
    def _get_Capacit(self, period, program, initiative, delivery, execution_perid, period_reduced, subscribers_by_region):
         try:
-            directory = f'{os.getcwd()}/main/templates/reports/capables/'
+            directory = f'{os.getcwd()}/research/templates/reports/capables/'
+            
             # Wallpaper
             wallpaper = f'{directory}images/pag1.jpg'
             self.pdf.drawImage(wallpaper, 0, 0, width=850, height=595)
